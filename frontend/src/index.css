@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-main: #131924;
+  --bg-card: #232a3b;
+  --bg-card-hover: #2a3347;
+  --text-main: #ffffff;
+  --text-muted: #a0a8b8;
+  --accent-blue: #3b71ca;
+  --accent-blue-hover: #2d5db3;
+  --accent-green: #00d859;
+  --accent-green-hover: #00b34a;
+  --border-color: #353f54;
+  --border-radius: 12px;
+  --transition: all 0.2s ease-in-out;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Layout utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.full-screen-center {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Cards & Containers */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.device-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  width: 150px;
+  height: 150px;
+  gap: 1rem;
+}
+
+.device-card:hover {
+  background-color: var(--bg-card-hover);
+  border-color: var(--accent-blue);
+  transform: translateY(-5px);
+}
+
+.device-card.active {
+  border-color: var(--accent-blue);
+  background-color: rgba(59, 113, 202, 0.1);
+}
+
+.device-icon {
+  color: var(--accent-blue);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background-color: var(--accent-blue);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-blue-hover);
+}
+
+.btn-success {
+  background-color: var(--accent-green);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: var(--accent-green-hover);
+}
+
+.btn-secondary {
+  background-color: var(--bg-card-hover);
+  color: white;
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--border-color);
+}
+
+/* Inputs */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.input-label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.input-field {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-color);
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 2px rgba(59, 113, 202, 0.2);
+}
+
+/* Tables for Dashboard */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 1rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Badges */
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-blue {
+  background-color: rgba(59, 113, 202, 0.2);
+  color: #8bb4f5;
+}
+
+.badge-green {
+  background-color: rgba(0, 216, 89, 0.2);
+  color: #4ade80;
+}
+
+.badge-outline {
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  gap: 1rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+/* App CSS fixes */
+.app-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
