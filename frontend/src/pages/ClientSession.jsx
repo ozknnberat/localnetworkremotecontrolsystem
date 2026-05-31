@@ -14,6 +14,7 @@ const ClientSession = () => {
   const peerRef = useRef(null);
   const containerRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
+  const isGamerOnMobile = mode === 'gamer' && (device === 'Telefon' || device === 'Tablet');
 
   useEffect(() => {
     if (!socket || !hostId) return;
@@ -179,11 +180,30 @@ const ClientSession = () => {
     }
   };
 
+  const pressedKeys = useRef(new Set());
+
   const handleKeyDown = (e) => {
     if (!socket || !isConnected) return;
+    if (pressedKeys.current.has(e.key)) return; // Prevent OS auto-repeat spam
+    pressedKeys.current.add(e.key);
+
     socket.emit('remote_control', {
       target: hostId,
       type: 'keyboard',
+      action: 'keydown',
+      key: e.key,
+      viewerId: socket?.id
+    });
+  };
+
+  const handleKeyUp = (e) => {
+    if (!socket || !isConnected) return;
+    pressedKeys.current.delete(e.key);
+
+    socket.emit('remote_control', {
+      target: hostId,
+      type: 'keyboard',
+      action: 'keyup',
       key: e.key,
       viewerId: socket?.id
     });
@@ -234,13 +254,14 @@ const ClientSession = () => {
             touchAction: 'none',
             outline: 'none'
           }}
-          onMouseMove={handleMouseMove}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          onMouseMove={!isGamerOnMobile ? handleMouseMove : undefined}
+          onMouseDown={!isGamerOnMobile ? handleMouseDown : undefined}
+          onMouseUp={!isGamerOnMobile ? handleMouseUp : undefined}
+          onTouchStart={!isGamerOnMobile ? handleTouchStart : undefined}
+          onTouchMove={!isGamerOnMobile ? handleTouchMove : undefined}
+          onTouchEnd={!isGamerOnMobile ? handleTouchEnd : undefined}
           onKeyDown={handleKeyDown}
+          onKeyUp={handleKeyUp}
         >
           {!isConnected && <span style={{ color: 'var(--text-muted)' }}>Görüntü Bekleniyor...</span>}
           <video 
@@ -255,7 +276,7 @@ const ClientSession = () => {
               display: isConnected ? 'block' : 'none'
             }} 
           />
-          {mode === 'gamer' && (device === 'Telefon' || device === 'Tablet') && (
+          {isGamerOnMobile && (
             <VirtualGamepad />
           )}
         </div>

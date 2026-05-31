@@ -396,7 +396,7 @@ const VirtualGamepad = () => {
   };
 
   const handleTrigger = (triggerName, val) => {
-    const isPressed = val > 0.1;
+    const isPressed = val > 0.25; // Hassasiyet eşiği %25'e çekildi
     if (isPressed !== analogStates.current[triggerName]) {
       analogStates.current[triggerName] = isPressed;
       sendKey(triggerName, isPressed);

@@ -16,6 +16,20 @@ const io = new Server(httpServer, {
 app.use(cors());
 app.use(express.json());
 
+// JS tuş isimlerini nut.js Key nesnelerine dönüştüren yardımcı fonksiyon
+const jsToNutKey = (jsKey) => {
+  const map = {
+    'ArrowUp': Key.Up, 'ArrowDown': Key.Down, 'ArrowLeft': Key.Left, 'ArrowRight': Key.Right,
+    ' ': Key.Space, 'Enter': Key.Enter, 'Backspace': Key.Backspace, 'Escape': Key.Escape,
+    'Tab': Key.Tab, 'Shift': Key.LeftShift, 'Control': Key.LeftControl, 'Alt': Key.LeftAlt
+  };
+  if (map[jsKey]) return map[jsKey];
+  if (jsKey.length === 1) {
+    return Key[jsKey.toUpperCase()];
+  }
+  return null;
+};
+
 // Fare gecikmelerini kapatarak kasma/donmaları sıfırla:
 mouse.config.autoDelayMs = 0;
 mouse.config.mouseSpeed = 10000;
@@ -141,14 +155,14 @@ io.on('connection', (socket) => {
            }
          }
        } else if (data.type === 'keyboard') {
-         if (data.key.length === 1) {
-           await keyboard.type(data.key);
-         } else if (data.key === 'Backspace') {
-           await keyboard.pressKey(Key.Backspace);
-           await keyboard.releaseKey(Key.Backspace);
-         } else if (data.key === 'Enter') {
-           await keyboard.pressKey(Key.Enter);
-           await keyboard.releaseKey(Key.Enter);
+         // Mac veya başka PC'den fiziksel klavye ile gönderilen tuşları işle
+         const nutKey = jsToNutKey(data.key);
+         if (nutKey !== undefined && nutKey !== null) {
+           if (data.action === 'keydown') {
+             await keyboard.pressKey(nutKey);
+           } else if (data.action === 'keyup') {
+             await keyboard.releaseKey(nutKey);
+           }
          }
        }
      } catch (err) {
